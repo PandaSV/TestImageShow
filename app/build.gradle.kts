@@ -66,4 +66,13 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+    // Retrofit for network requests
+    implementation(libs.retrofit)
+
+    // Converter for converting JSON responses to Kotlin objects (Gson converter)
+    implementation(libs.converter.gson)
+
+    // OkHttp for logging network requests (optional but useful)
+    implementation(libs.logging.interceptor)
 }
