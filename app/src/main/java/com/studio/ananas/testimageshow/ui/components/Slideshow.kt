@@ -1,11 +1,17 @@
 package com.studio.ananas.testimageshow.ui.components
 
-import android.content.Context
 import android.net.Uri
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.viewinterop.AndroidView
@@ -14,14 +20,12 @@ import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.ui.PlayerView
 import com.studio.ananas.testimageshow.api.data.PlaylistItem
-import com.studio.ananas.testimageshow.ui.vms.ApiViewModel
-import java.io.File
 import kotlinx.coroutines.delay
+import java.io.File
 
 @Composable
 fun Slideshow(mediaFiles: List<PlaylistItem>) {
-    var currentIndex by remember { mutableStateOf(0) }
-    val context = LocalContext.current
+    var currentIndex by remember { mutableIntStateOf(0) }
 
     LaunchedEffect(mediaFiles) {
         if (mediaFiles.isNotEmpty()) {
