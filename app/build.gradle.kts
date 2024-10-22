@@ -67,6 +67,10 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
+    // Lifecycle for ViewModel
+    implementation(libs.androidx.lifecycle.runtime.ktx.v240)
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
+
     // Retrofit for network requests
     implementation(libs.retrofit)
 

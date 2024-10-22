@@ -1,4 +1,4 @@
-package com.studio.ananas.testimageshow.api
+package com.studio.ananas.testimageshow.api.data
 
 data class ScreenResponse(
     val screenKey: String,

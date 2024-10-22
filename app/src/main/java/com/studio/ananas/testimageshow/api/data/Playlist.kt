@@ -1,4 +1,4 @@
-package com.studio.ananas.testimageshow.api
+package com.studio.ananas.testimageshow.api.data
 
 data class Playlist(
     val channelTime: Int,
