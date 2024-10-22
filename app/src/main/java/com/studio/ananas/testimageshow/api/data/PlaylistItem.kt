@@ -1,5 +1,9 @@
 package com.studio.ananas.testimageshow.api.data
 
+/**
+ * A data class inferred from the test api response structure,
+ * Representing a media object
+ */
 data class PlaylistItem(
     val creativeRefKey: String?,
     val duration: Int,
@@ -12,5 +16,5 @@ data class PlaylistItem(
     val creativeKey: String,
     val orderKey: Int,
     val eventTypesList: List<String>,
-    val localFilePath: String? = null
+    val localFilePath: String? = null // Added this to point at the local file once downloaded
 )

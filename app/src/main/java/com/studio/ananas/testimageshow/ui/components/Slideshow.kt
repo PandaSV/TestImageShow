@@ -23,6 +23,9 @@ import com.studio.ananas.testimageshow.api.data.PlaylistItem
 import kotlinx.coroutines.delay
 import java.io.File
 
+/**
+ * A Composable to cycle through a list of media objects
+ */
 @Composable
 fun Slideshow(mediaFiles: List<PlaylistItem>) {
     var currentIndex by remember { mutableIntStateOf(0) }
@@ -30,8 +33,9 @@ fun Slideshow(mediaFiles: List<PlaylistItem>) {
     LaunchedEffect(mediaFiles) {
         if (mediaFiles.isNotEmpty()) {
             while (true) {
-//                delay(5000) // Delay for 5 seconds
-                currentIndex = (currentIndex + 1) % mediaFiles.size // Cycle through the media files
+                currentIndex = (currentIndex + 1) % mediaFiles.size
+
+                // Get the duration from playlist item
                 val duration: Long = (mediaFiles[currentIndex].duration*1000).toLong()
                 delay(duration)
             }
@@ -42,6 +46,7 @@ fun Slideshow(mediaFiles: List<PlaylistItem>) {
         if (mediaFiles.isNotEmpty()) {
             val currentMedia = mediaFiles[currentIndex]
             currentMedia.localFilePath?.let { localFilePath ->
+                // TODO make the distinction by media type, not extension
                 if (localFilePath.endsWith(".jpg") || localFilePath.endsWith(".png")) {
                     // Display image
                     val painter = rememberImagePainter(File(localFilePath))
@@ -55,6 +60,11 @@ fun Slideshow(mediaFiles: List<PlaylistItem>) {
     }
 }
 
+/**
+ * A Composable to show a video file. Uses a deprecated lib.
+ * Basically, a POC to save time.
+ * TODO Find an up-to-date solution
+ */
 @Composable
 fun VideoPlayer(videoUrl: String) {
     val context = LocalContext.current
@@ -71,6 +81,7 @@ fun VideoPlayer(videoUrl: String) {
         }
     }
 
+    // Needs to be wrapped in a good old View
     AndroidView(factory = {
         PlayerView(context).apply {
             player = exoPlayer

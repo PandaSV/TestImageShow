@@ -46,33 +46,19 @@ class ApiViewModel : ViewModel() {
         }
     }
 
-//    fun downloadAllFiles(screenResponse: ScreenResponse, outputDirectory: File) {
-//        CoroutineScope(Dispatchers.IO).launch {
-//            screenResponse.playlists.forEach { playlist ->
-//                playlist.playlistItems.forEach { playlistItem ->
-//                    // Construct the URL (assuming it's a relative path)
-//                    val fileUrl = "https://your-api-endpoint.com/files/" + playlistItem.creativeKey
-//                    val fileName = playlistItem.creativeLabel
-//
-//                    // Call the downloadFile utility function
-//                    downloadFile(fileUrl, outputDirectory, fileName)
-//                }
-//            }
-//        }
-//    }
-
+    // Download all the media linked in the response
     fun downloadAllFiles(screenResponse: ScreenResponse, outputDirectory: File) {
         CoroutineScope(Dispatchers.IO).launch {
             val newPlaylists: MutableList<Playlist> = screenResponse.playlists.toMutableList()
             screenResponse.playlists.forEachIndexed { playlistindex, playlist ->
                 val newPlaylistItems: MutableList<PlaylistItem> = playlist.playlistItems.toMutableList()
                 playlist.playlistItems.forEachIndexed { itemIndex, playlistItem ->
-                    // Construct the full file URL
+                    // TODO move this URL to the API client, make use of the base URL
                     val fileUrl =
                         "https://test.onsignage.com/PlayerBackend/creative/get/" + playlistItem.creativeKey
                     val fileName = playlistItem.creativeLabel
 
-                    // Call the unified API client download function
+                    // Call the API client download function
                     val outputFile = File(outputDirectory, fileName)
                     try {
                         RetrofitClient.downloadFile(fileUrl, outputFile)

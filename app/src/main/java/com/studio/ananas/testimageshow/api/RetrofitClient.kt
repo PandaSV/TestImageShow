@@ -8,6 +8,9 @@ import okhttp3.logging.HttpLoggingInterceptor
 import java.io.File
 import java.io.FileOutputStream
 
+/**
+ * API Client
+ */
 object RetrofitClient {
 
     private const val BASE_URL = "https://test.onsignage.com/PlayerBackend/screen/playlistItems/"
@@ -30,6 +33,7 @@ object RetrofitClient {
 
     fun apiService(): ApiService = instance.create(ApiService::class.java)
 
+    // Download a single file
     suspend fun downloadFile(fileUrl: String, outputFile: File) {
         val responseBody: ResponseBody = apiService().downloadFile(fileUrl)
         responseBody.byteStream().use { inputStream ->

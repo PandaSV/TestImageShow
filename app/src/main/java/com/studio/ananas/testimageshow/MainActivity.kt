@@ -55,14 +55,10 @@ fun MyApp(apiViewModel: ApiViewModel = viewModel()) {
             when {
                 isLoading -> CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
                 screenResponse != null -> {
+                    // TODO move this call to the VM. It's here to save time on propagating context-dependent stuff to VM
                     apiViewModel.downloadAllFiles(screenResponse!!, outputDir)
                     Slideshow(mediaFiles = screenResponse!!.playlists.flatMap { it.playlistItems })
                 }
-                /*ScreenResponseContent(
-                    screenResponse = screenResponse!!,
-                    viewModel = apiViewModel,
-                    outputDirectory = outputDir
-                )*/
                 else -> {
                     Button(
                         onClick = { apiViewModel.fetchData() },
@@ -76,6 +72,7 @@ fun MyApp(apiViewModel: ApiViewModel = viewModel()) {
     }
 }
 
+//TODO remove this. Used this to visually confirm whether I get a response from the API
 //@Composable
 //fun ScreenResponseContent(screenResponse: ScreenResponse) {
 //    Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
@@ -111,6 +108,7 @@ fun MyApp(apiViewModel: ApiViewModel = viewModel()) {
 //    }
 //}
 
+//TODO remove this. Used this to visually confirm whether I get a response from the API + Download
 //@Composable
 //fun ScreenResponseContent(
 //    screenResponse: ScreenResponse,
