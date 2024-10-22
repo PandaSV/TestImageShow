@@ -1,6 +1,7 @@
 package com.studio.ananas.testimageshow.ui.components
 
 import android.net.Uri
+import android.view.ViewGroup
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -57,10 +58,8 @@ fun Slideshow(mediaFiles: List<PlaylistItem>) {
 @Composable
 fun VideoPlayer(videoUrl: String) {
     val context = LocalContext.current
-    // Remember the ExoPlayer instance
     val exoPlayer = remember { ExoPlayer.Builder(context).build() }
 
-    // Set up the media item and prepare the player
     DisposableEffect(Unit) {
         val mediaItem = MediaItem.fromUri(Uri.parse(videoUrl))
         exoPlayer.setMediaItem(mediaItem)
@@ -72,12 +71,16 @@ fun VideoPlayer(videoUrl: String) {
         }
     }
 
-    // Embed PlayerView in Compose using AndroidView
     AndroidView(factory = {
         PlayerView(context).apply {
-            player = exoPlayer // Set the ExoPlayer instance to the PlayerView
+            player = exoPlayer
+            layoutParams = ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT // Make sure the player view is fully visible
+            )
         }
     }, update = {
-        it.player = exoPlayer // Ensure PlayerView is updated with the ExoPlayer instance
+        it.player = exoPlayer
     })
 }
+
