@@ -79,4 +79,11 @@ dependencies {
 
     // OkHttp for logging network requests (optional but useful)
     implementation(libs.logging.interceptor)
+
+    // OkHttp for network requests (for file downloading)
+    implementation(libs.okhttp)
+
+    // Kotlin coroutines
+    implementation(libs.kotlinx.coroutines.core)
+    implementation(libs.kotlinx.coroutines.android)
 }
