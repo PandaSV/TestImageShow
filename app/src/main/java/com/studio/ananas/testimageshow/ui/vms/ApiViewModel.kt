@@ -1,10 +1,13 @@
 package com.studio.ananas.testimageshow.ui.vms
 
+import android.content.Context
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.studio.ananas.testimageshow.api.RetrofitClient
+import com.studio.ananas.testimageshow.api.data.Playlist
+import com.studio.ananas.testimageshow.api.data.PlaylistItem
 import com.studio.ananas.testimageshow.api.data.ScreenResponse
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -61,23 +64,30 @@ class ApiViewModel : ViewModel() {
 
     fun downloadAllFiles(screenResponse: ScreenResponse, outputDirectory: File) {
         CoroutineScope(Dispatchers.IO).launch {
-            screenResponse.playlists.forEach { playlist ->
-                playlist.playlistItems.forEach { playlistItem ->
+            val newPlaylists: MutableList<Playlist> = screenResponse.playlists.toMutableList()
+            screenResponse.playlists.forEachIndexed { playlistindex, playlist ->
+                val newPlaylistItems: MutableList<PlaylistItem> = playlist.playlistItems.toMutableList()
+                playlist.playlistItems.forEachIndexed { itemIndex, playlistItem ->
                     // Construct the full file URL
-                    val fileUrl = "https://test.onsignage.com/PlayerBackend/creative/get/" + playlistItem.creativeKey
+                    val fileUrl =
+                        "https://test.onsignage.com/PlayerBackend/creative/get/" + playlistItem.creativeKey
                     val fileName = playlistItem.creativeLabel
 
                     // Call the unified API client download function
                     val outputFile = File(outputDirectory, fileName)
                     try {
                         RetrofitClient.downloadFile(fileUrl, outputFile)
+                        newPlaylistItems[itemIndex] = playlistItem.copy(localFilePath = outputFile.absolutePath)
+
                         println("Downloaded: $fileName")
                     } catch (e: Exception) {
                         println("Error downloading: $fileName")
                         e.printStackTrace()
                     }
                 }
+                newPlaylists[playlistindex] = playlist.copy(playlistItems = newPlaylistItems)
             }
+            _apiResponse.value = screenResponse.copy(playlists = newPlaylists)
         }
     }
 }

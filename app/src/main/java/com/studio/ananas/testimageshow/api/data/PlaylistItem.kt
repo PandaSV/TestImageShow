@@ -11,5 +11,6 @@ data class PlaylistItem(
     val playlistKey: String,
     val creativeKey: String,
     val orderKey: Int,
-    val eventTypesList: List<String>
+    val eventTypesList: List<String>,
+    val localFilePath: String? = null
 )

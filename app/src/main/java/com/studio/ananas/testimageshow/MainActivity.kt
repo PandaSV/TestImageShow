@@ -26,6 +26,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.studio.ananas.testimageshow.api.data.ScreenResponse
+import com.studio.ananas.testimageshow.ui.components.Slideshow
 import com.studio.ananas.testimageshow.ui.theme.TestImageShowTheme
 import com.studio.ananas.testimageshow.ui.vms.ApiViewModel
 import java.io.File
@@ -55,16 +56,22 @@ fun MyApp(apiViewModel: ApiViewModel = viewModel()) {
 
     // UI components
     Scaffold(
-        topBar = { TopAppBar(title = { Text("API Call Example") }) }
+        topBar = { TopAppBar(title = { Text("Signage App Test") }) }
     ) { innerPadding ->
-        Box(modifier = Modifier.fillMaxSize().padding(innerPadding)) {
+        Box(modifier = Modifier
+            .fillMaxSize()
+            .padding(innerPadding)) {
             when {
                 isLoading -> CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
-                screenResponse != null -> ScreenResponseContent(
+                screenResponse != null -> {
+                    apiViewModel.downloadAllFiles(screenResponse!!, outputDir)
+                    Slideshow(mediaFiles = screenResponse!!.playlists.flatMap { it.playlistItems })
+                }
+                /*ScreenResponseContent(
                     screenResponse = screenResponse!!,
                     viewModel = apiViewModel,
                     outputDirectory = outputDir
-                )
+                )*/
                 else -> {
                     Button(
                         onClick = { apiViewModel.fetchData() },
@@ -113,62 +120,62 @@ fun MyApp(apiViewModel: ApiViewModel = viewModel()) {
 //    }
 //}
 
-@Composable
-fun ScreenResponseContent(
-    screenResponse: ScreenResponse,
-    viewModel: ApiViewModel,
-    outputDirectory: File
-) {
-    Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
-        // Display general screen information
-        Text(text = "Screen Key: ${screenResponse.screenKey}")
-//        Text(text = "Company: ${screenResponse.company}")
-//        Text(text = "Breakpoint Interval: ${screenResponse.breakpointInterval}")
-
-//        // Display modified timestamp
-//        Text(text = "Last Modified: ${screenResponse.modified}")
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        // Iterate over playlists
-        Text(text = "Playlists:")
-        var hasPlaylistItems = false
-        screenResponse.playlists.forEach { playlist ->
-            Text(text = "Playlist Key: ${playlist.playlistKey}")
-//            Text(text = "Channel Time: ${playlist.channelTime}")
-            Spacer(modifier = Modifier.height(8.dp))
-
-            // Check if there are any playlist items
-            if (playlist.playlistItems.isNotEmpty()) {
-                hasPlaylistItems = true
-                // Iterate over playlist items
-                playlist.playlistItems.forEachIndexed { index, item ->
-//                    Text(text = "  Item ${index + 1}:")
-//                    Text(text = "    Creative Label: ${item.creativeLabel}")
-                    Text(text = "    Creative Key: ${item.creativeKey}")
-//                    Text(text = "    Duration: ${item.duration} seconds")
-//                    Text(text = "    Start Date: ${item.startDate}")
-//                    Text(text = "    Expire Date: ${item.expireDate}")
-//                    Text(text = "    Slide Priority: ${item.slidePriority}")
-                    Spacer(modifier = Modifier.height(8.dp))
-                }
-            }
-        }
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        // Show the download button only if there are playlist items
-        if (hasPlaylistItems) {
-            Button(
-                onClick = {
-                    viewModel.downloadAllFiles(screenResponse, outputDirectory)
-                }
-            ) {
-                Text("Download All Files")
-            }
-        } else {
-            Text(text = "No files available for download")
-        }
-    }
-}
-
+//@Composable
+//fun ScreenResponseContent(
+//    screenResponse: ScreenResponse,
+//    viewModel: ApiViewModel,
+//    outputDirectory: File
+//) {
+//    Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
+//        // Display general screen information
+//        Text(text = "Screen Key: ${screenResponse.screenKey}")
+////        Text(text = "Company: ${screenResponse.company}")
+////        Text(text = "Breakpoint Interval: ${screenResponse.breakpointInterval}")
+//
+////        // Display modified timestamp
+////        Text(text = "Last Modified: ${screenResponse.modified}")
+//
+//        Spacer(modifier = Modifier.height(16.dp))
+//
+//        // Iterate over playlists
+//        Text(text = "Playlists:")
+//        var hasPlaylistItems = false
+//        screenResponse.playlists.forEach { playlist ->
+//            Text(text = "Playlist Key: ${playlist.playlistKey}")
+////            Text(text = "Channel Time: ${playlist.channelTime}")
+//            Spacer(modifier = Modifier.height(8.dp))
+//
+//            // Check if there are any playlist items
+//            if (playlist.playlistItems.isNotEmpty()) {
+//                hasPlaylistItems = true
+//                // Iterate over playlist items
+//                playlist.playlistItems.forEachIndexed { index, item ->
+////                    Text(text = "  Item ${index + 1}:")
+////                    Text(text = "    Creative Label: ${item.creativeLabel}")
+//                    Text(text = "    Creative Key: ${item.creativeKey}")
+////                    Text(text = "    Duration: ${item.duration} seconds")
+////                    Text(text = "    Start Date: ${item.startDate}")
+////                    Text(text = "    Expire Date: ${item.expireDate}")
+////                    Text(text = "    Slide Priority: ${item.slidePriority}")
+//                    Spacer(modifier = Modifier.height(8.dp))
+//                }
+//            }
+//        }
+//
+//        Spacer(modifier = Modifier.height(16.dp))
+//
+//        // Show the download button only if there are playlist items
+//        if (hasPlaylistItems) {
+//            Button(
+//                onClick = {
+//                    viewModel.downloadAllFiles(screenResponse, outputDirectory)
+//                }
+//            ) {
+//                Text("Download All Files")
+//            }
+//        } else {
+//            Text(text = "No files available for download")
+//        }
+//    }
+//}
+//

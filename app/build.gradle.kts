@@ -86,4 +86,15 @@ dependencies {
     // Kotlin coroutines
     implementation(libs.kotlinx.coroutines.core)
     implementation(libs.kotlinx.coroutines.android)
+
+
+
+    implementation(libs.ui)
+    implementation(libs.androidx.material)
+    implementation(libs.ui.tooling.preview)
+    implementation(libs.androidx.lifecycle.runtime.ktx.v251)
+    implementation(libs.coil.compose) // Coil for image loading
+    implementation(libs.exoplayer.v2181) // ExoPlayer for video playback
+
+
 }
